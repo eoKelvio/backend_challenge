@@ -4,7 +4,6 @@ from datetime import date, datetime
 
 class RequestSchema(BaseModel):
     body: str
-    event: str
 
 class PersonBody(BaseModel):
     person_id: int
