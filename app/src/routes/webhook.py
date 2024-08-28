@@ -26,6 +26,7 @@ def decrypt(request, event):
         
     return {
         "time": time,
+        "event": event,
         event: data.model_dump()
     }
 
