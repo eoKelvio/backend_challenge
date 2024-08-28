@@ -21,8 +21,3 @@ class Account(Base):
 
     owner = relationship("Person", back_populates="account")
     card = relationship("Card", back_populates="owner")
-
-class AccountRequest(Base):
-    time = Column(DateTime)
-    body = Column(String)
-    event = Column(String)

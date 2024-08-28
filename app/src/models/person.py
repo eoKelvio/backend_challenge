@@ -15,8 +15,3 @@ class Person(Base):
     cpf = Column(String(11), nullable=False)
 
     account = relationship("Account", back_populates=("owner"))
-
-class PersonRequest(Base):
-    time = Column(DateTime)
-    body = Column(String)
-    event = Column(String)

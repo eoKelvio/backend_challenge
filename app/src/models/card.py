@@ -20,8 +20,3 @@ class Card(Base):
     expiration_date = Column(String, nullable=False)
 
     owner = relationship("Account", back_populates="card")
-
-class CardRequest(Base):
-    time = Column(DateTime)
-    body = Column(String)
-    event = Column(String)
