@@ -1,22 +1,29 @@
-from fastapi import APIRouter, Request, HTTPException
+import base64
+from datetime import datetime
+import json
+from fastapi import APIRouter, HTTPException
 from src.utils import decrypt_body
 from config import PRIVATE_KEY_PATH
+from src.schemas import RequestSchema, CardBody
 
-router = APIRouter(prefix='card')
+router = APIRouter(prefix='/card')
 
 @router.post('/')
-async def card(request:Request):
+async def person_response(request: RequestSchema):
     try:
-
-        data = await request.json()
-        encrypted_body = data.get("body")
-        
-        if not encrypted_body:
-            raise HTTPException(status_code=400, detail="Campo 'body' é obrigatório.")
+        time = datetime.now()
+        event = request.event
+        encrypted_body = base64.b64decode(request.body)
         
         decrypted_body = decrypt_body(encrypted_body, PRIVATE_KEY_PATH)
+        card_data_dump = json.loads(decrypted_body)
+        card_data = CardBody(**card_data_dump)
         
-        return {decrypted_body}
+        return {
+            "time": time,
+            "event": event,
+            "card": card_data.model_dump()
+        }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

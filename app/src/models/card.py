@@ -1,6 +1,6 @@
 import enum
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, Date
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Date
 from database import Base
 
 class StatusEnum(enum.Enum):
