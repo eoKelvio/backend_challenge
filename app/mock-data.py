@@ -7,9 +7,9 @@ from cryptography.hazmat.primitives import hashes
 from src.schemas import AccountBody, CardBody, PersonBody
 
 person_data = PersonBody(
-    person_id=1,
+    id=2,
     name="João da Silva",
-    email="joao.silva@example.com",
+    email="paulo.guedes@example.com",
     gender="M",
     birth_date="1990-01-01",
     address="Rua Exemplo, 123",
@@ -18,7 +18,7 @@ person_data = PersonBody(
 )
 
 account_data = AccountBody(
-    account_id=1,
+    id=1,
     status_id=0,
     due_day=10,
     person_id=1,
@@ -27,7 +27,7 @@ account_data = AccountBody(
 )
 
 card_data = CardBody(
-    card_id=1,
+    id=1,
     card_number="5500989867560184",
     account_id=1,
     status_id=0,
@@ -36,7 +36,7 @@ card_data = CardBody(
 )
 
 # Serializar para JSON
-person_json = person_data.model_dump_json()
+
 
 # Carregar a chave pública
 def load_public_key(public_key_path):
@@ -57,16 +57,18 @@ def encrypt_body(body, public_key_path):
     )
     return encrypted_body
 
-encrypted_body = encrypt_body(person_json, "./public_key.pem")
+test_json = person_data.model_dump_json()
+
+encrypted_body = encrypt_body(test_json, "./public_key.pem")
 encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
 print(encrypted_body_base64)
 
 # person
-# dvTBNbMgo9eAs5cXLXWntTq6jlK/IC9zGm1SFuptWmpqtKjJNiRRvWVW2TZf8AfYoNswhNkbefV3u0l3WEBKNyTqEb4GJP4lQ/w++WepXS3F0vuVOlgbUAjrJIpRSD2pvifeGdiNRoeRINLH2KjXejYATa/NUtW7M7Iajwfz3qpD1clHzfkTYdFlbK5hbuOqtlPuAaq0QOh74iCensUmMh3Uvw7fFr95v8MfBoZ3T1RR0aFQ+J3hXQk1LzAQEXfkLHT5MZyfR7ya7QP/YWtRy088vlNt/rStdNE0mMQO7zkeApMqUXx4REWkkTNXzR0FVVqSjQa3NO33tAOwDb8vGQ==
+# hApOWpAP519r1vrBfWMSO4k+qX28/d+hsqsIKpZcYkYezGvyPSFVnQ1H/5jWucndqXgovoCVrPZx6cMX2hBdF7UkySbXvoe50+1dy0HMwlLdNw5k0GqSnWKY/V7i1kt8CsVrcpHQ0PeOGWdSdkUFC8lBweh1cx3BwJ0s7dDdKtb0DCEx9mAcOeoKzG6DLMFJui3INFAp2/X55tHfqWhEC+GaVkVcBmtPAVWr651ESMTLZIN2Lcdbq82GpfWyvtAD6tmqkFUYEb9yVyLEQ2Vz0H8obS5Xw1igIZMXrNCV1FttcggOCIrSgRitSs53fWMk6Qb3tye7OjSIO1NKtutgQw==
 
 
 # account
-# CrHsrpRt1h+UHIir0Piedu9+8pLgqLvo23CXnXAL32rL4QwbNRdkakIiWPSAgs5cDULexlfx7zxjC2eQCABeKxu56n/4K3NJSxCUtF4H+tQdulRF6K5D9TPt0BL2OtO3RUKyyiwrZPcxGQy6Df6Kp/e6taSdjVmY/zOE3Kqs6utDSt/kbb0u1iVCFJwto+3bDPKHRiR482WgMWsiPV1kL4yZ9nr0xwwOpDn0P5lsYrIeXnAyebLcTPdsnUGVFKCPDwD2yErN+6a4n/dgee+CbJPpWEksFMLDgx4AbOr8L1dG/9UueoXO77XjyfeAVLFpNVDqR3PpU0AFcGy15IdQwA==
+# ZecOar+43Au1Ac5aqiDLObLh7JqrctJ2M91Rger7acTBJowcykG7hYCdN/ole47pNKSjIEbTny2RUU97QHBTEvjGVhrSNN6QNGHBfZr8uFh/mu6HG5D2wQA59CJ9RvUlx8PzlHCnHoKDr0E44TpWPr1HqgLXu6uN15hN79bjQ7SgNj3kkVwdGipJjJK/u27pefHVkBNCsjR/MvESfTDOKMQrZpIqeRbclKWoL5QJL+Yuqed2IVZ/k4ILooebyAZdK5RIbWA7Onzkez4zSmJGaFqAQ3OCKgZSCoVtxgmYIgBBtwHbSDXQM2V9LhKF1Sz8YSl3VQJo4JA0QXlGJ64UHA==
 
 # card
-# vNaqBpDgBF9U4W6r+15Jei5wljNpHQ30Z6t21PauvpOO6ucQI5Dnc+0ocKM4mMKWzZDGoIhWyAWLvE9Tw5etZRVpu6OwTb4blCE7yWWnyr8NRLKjx2qudPw6pelJHstdAqqCFvTjpgDuueZr6ruZ+x1MtXYUwE+aN76fWqOf9AWl4TVs6XlqJ81TvDNGxIzHPjVAmy526eNPE1yHgHLlVfP5Vq6IauKBbTXICsuwLViPfcrBsc5ZdeC2fnQBmWKlaNf8EO8Eq/Un7eqeO2oEjYq97rFFRpq5prcM5XUkh8wh0JJjsWg9o8o+tWV1KRa4yNbaTVIPQyBumMFiR0InoQ==
+# EgGJz4BCiFX+4JNhqCV5EfJqigB4dXcfjY6eIpr5ZC0duE19AtD9D/y2d7IS/teOJCmwMUCB5LuypZ2CdINgrOOdGTggHXwgUxMpOc2UGKHux/rb7DJjoVV3aPy/bXC10IOzRrU6+6rmCy9G7HORSkKtX59fzEMt20pNdp+BZmHDZGZVvXWA6aC5PlRtlKQXYqI27WB/+z2LteGXUmxMuwC2ZgPb/tlP6DYSGbJw/BAe8Le/d3qsQzZSTGaycFMmrv1Kj80BbQ9K77XUoSCRu6u/uoV+pI9aMXYTq/a1RlzcON9DrT7CzJMMAkbaWensLRdNaCbMXGBt70JIfJhdmA==

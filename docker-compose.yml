@@ -4,9 +4,9 @@ services:
   postgres: 
     image: postgres:16-alpine3.20
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 24466666
-      POSTGRES_DB: my_project_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 244466666
+      POSTGRES_DB: dbc
     ports:
       - 5432:5432
     volumes:
@@ -15,7 +15,7 @@ services:
   api:
     build: .
     environment:
-      DATABASE_URL: postgresql://user:244466666@postgres:5432/dbc
+      DATABASE_URL: postgresql://postgres:244466666@postgres:5432/dbc
     ports: 
     - '9999:9999'
     volumes:

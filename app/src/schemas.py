@@ -1,12 +1,11 @@
 from pydantic import BaseModel
-from datetime import date, datetime
-
+from datetime import date
 
 class RequestSchema(BaseModel):
     body: str
 
 class PersonBody(BaseModel):
-    person_id: int
+    id: int
     name: str
     email: str
     gender: str
@@ -16,7 +15,7 @@ class PersonBody(BaseModel):
     cpf: str
 
 class AccountBody(BaseModel):
-    account_id: int
+    id: int
     status_id: int
     due_day: int
     person_id: int
@@ -24,7 +23,7 @@ class AccountBody(BaseModel):
     avaliable_balance: float
 
 class CardBody(BaseModel):
-    card_id: int
+    id: int
     card_number: str
     account_id: int
     status_id: int

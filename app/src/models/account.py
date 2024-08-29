@@ -1,7 +1,7 @@
 import enum
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Float, ForeignKey, Integer, String, Date
-from database import Base
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Date, Enum
+from src.database import Base
 
 class StatusEnum(enum.Enum):
     PENDENT = 0
@@ -10,10 +10,10 @@ class StatusEnum(enum.Enum):
     CLOSED = 3
 
 class Account(Base):
-    __tablename__= "accounts"
+    __tablename__ = "accounts"
 
-    account_id = Column(Integer, primary_key=True)
-    status_id = Column(Integer, enum(StatusEnum), nullable=False, default=0)
+    id = Column(Integer, primary_key=True)
+    status_id = Column(Integer, Enum(StatusEnum), nullable=False, default=0)
     due_day = Column(Integer, nullable=False)
     person_id = Column(Integer, ForeignKey('persons.id'), nullable=False)
     balance = Column(Float, nullable=False)
