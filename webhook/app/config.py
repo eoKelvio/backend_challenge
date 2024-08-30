@@ -2,9 +2,13 @@ from pydantic_settings import BaseSettings
 from fastapi import FastAPI
 import uvicorn
 
+app = FastAPI()
+
+# if __name__ == "__config__":
+#     uvicorn.run("config:app", host="0.0.0.0", port=9999, reload=True)
+
 class Settings(BaseSettings):
     private_key_path: str
-    database_url: str
 
     class Config:
         env_file = ".env"
@@ -13,9 +17,6 @@ class Settings(BaseSettings):
 settings = Settings()
 
 PRIVATE_KEY_PATH = settings.private_key_path
-DATABASE_URL = settings.database_url
 
-app = FastAPI()
 
-# if __name__ == "__config__":
-#     uvicorn.run("config:app", host="0.0.0.0", port=9999, reload=True)
+

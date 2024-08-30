@@ -1,7 +1,7 @@
 import enum
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Enum
-from src.database import Base
+from storage.database import Base
 
 class StatusEnum(enum.Enum):
     PENDENT = 0

@@ -3,7 +3,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 
-from src.schemas import AccountBody, CardBody, PersonBody
+from webhook.app.src.schemas import AccountBody, CardBody, PersonBody
 
 person_data = PersonBody(
     id=2,
