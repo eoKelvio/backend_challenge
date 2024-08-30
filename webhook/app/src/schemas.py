@@ -1,8 +1,10 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 class RequestSchema(BaseModel):
+    time: datetime
     body: str
+    event: str
 
 class PersonBody(BaseModel):
     id: int
