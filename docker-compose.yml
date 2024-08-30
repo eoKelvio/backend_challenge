@@ -11,19 +11,29 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - senai
 
-  api:
+  webhook:
     build: .
-    environment:
-      DATABASE_URL: postgresql://postgres:244466666@postgres:5432/dbc
     ports: 
     - '9999:9999'
-    volumes:
-      - .:/api
-    depends_on:
-      - postgres
+    networks:
+      - senai
+
+  storage:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://postgres:244466666@postgres:5432/dbc 
+    ports:
+      - '9998:9998'
+    networks:
+      - senai
+
+networks:
+  senai:
+    driver: bridge
 
 volumes:
-  api:
   postgres_data:
 

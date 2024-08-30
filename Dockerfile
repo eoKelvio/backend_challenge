@@ -5,6 +5,7 @@ WORKDIR /api
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONPATH=/api/webhook/app
+ENV PYTHONPATH=/api/storage/app
 
 
 COPY webhook/ ./webhook/
@@ -13,4 +14,6 @@ COPY storage/ ./storage/
 
 EXPOSE 9999
 
-CMD ["uvicorn", "webhook.app.main:app", "--host", "0.0.0.0", "--port", "9999", "--reload"]
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/start.sh"]
