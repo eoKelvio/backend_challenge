@@ -4,9 +4,6 @@ import uvicorn
 
 app = FastAPI()
 
-# if __name__ == "__config__":
-#     uvicorn.run("config:app", host="0.0.0.0", port=9999, reload=True)
-
 class Settings(BaseSettings):
     private_key_path: str
 
