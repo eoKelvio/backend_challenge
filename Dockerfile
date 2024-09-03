@@ -4,13 +4,13 @@ WORKDIR /api
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-ENV PYTHONPATH=/api/webhook/app
-ENV PYTHONPATH=/api/storage/app
+ENV PYTHONPATH=/api/webhook/app:/api/storage/app
 
+COPY apis/ .
+# COPY apis/streaming/ ./streaming/
 
-COPY webhook/ ./webhook/
-COPY streaming/ ./streaming/
-COPY storage/ ./storage/
+COPY .env .env
+
 
 EXPOSE 9999
 

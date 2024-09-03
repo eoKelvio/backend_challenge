@@ -20,6 +20,8 @@ services:
       - '9999:9999'
     networks:
       - senai
+    depends_on:
+      - rabbitmq
 
   storage:
     build: .
@@ -29,6 +31,9 @@ services:
       - '9998:9998'
     networks:
       - senai
+    depends_on:
+      - postgres
+      - rabbitmq
 
   rabbitmq:
     image: rabbitmq:3-management

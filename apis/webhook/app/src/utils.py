@@ -2,7 +2,6 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import UnsupportedAlgorithm
-import pika
 
 def load_private_key(private_key_path, password=None):
     with open(private_key_path, "rb") as key_file:

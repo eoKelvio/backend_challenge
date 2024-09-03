@@ -1,11 +1,16 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    database_url: str
     rabbitmq_url: str
+    private_key_path: str
+    database_url: str
 
     class Config:
         env_file = ".env"
         extra = "ignore"
 
-global_settings = Settings()
+settings = Settings()
+
+DATABASE_URL = settings.database_url
+PRIVATE_KEY_PATH = settings.private_key_path
+RABBITMQ_URL = settings.rabbitmq_url

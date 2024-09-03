@@ -2,10 +2,10 @@ import base64
 from datetime import datetime
 import json
 from fastapi import APIRouter, HTTPException
-from src.utils import decrypt_body
+from webhook.app.src.utils import decrypt_body
 from config import PRIVATE_KEY_PATH
-from src.schemas import RequestSchema, PersonBody, AccountBody, CardBody
-from src.utils import RabbitMQ
+from webhook.app.src.schemas import RequestSchema, PersonBody, AccountBody, CardBody
+from shared import RabbitMQ
 import json
 
 router = APIRouter(prefix='/webhook')

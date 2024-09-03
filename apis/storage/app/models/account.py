@@ -1,37 +1,24 @@
 import enum
-from sqlalchemy import Table, Column, Integer, Float, ForeignKey, Enum
-from sqlalchemy.orm import relationship
-from src.database import mapper_registry
+from sqlalchemy import Integer, Float, ForeignKey, Enum
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from storage.app.src.database import mapper_registry
 
 class StatusEnum(enum.Enum):
-        PENDENT = 0
-        ACTIVE = 1
-        SUSPENDED = 2
-        CLOSED = 3
-
-account_table = Table(
-    "accounts",
-    mapper_registry.metadata,
-    Column("id", Integer, primary_key=True),
-    Column("status_id", Enum(StatusEnum), nullable=False, default=0),
-    Column("due_day", Integer, nullable=False),
-    Column("person_id", Integer, ForeignKey('persons.id'), nullable=False),
-    Column("balance", Float, nullable=False),
-    Column("avaliable_balance", Float, nullable=False)
-)
+    PENDENT = 0
+    ACTIVE = 1
+    SUSPENDED = 2
+    CLOSED = 3
 
 @mapper_registry.mapped
 class Account:
-    __table__ = account_table
+    __tablename__ = "accounts"
 
-    id: int
-    status_id: StatusEnum
-    due_day: int
-    person_id: int
-    balance: float
-    avaliable_balance: float
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    status_id: Mapped[StatusEnum] = mapped_column(Enum(StatusEnum), nullable=False, default=StatusEnum.PENDENT)
+    due_day: Mapped[int] = mapped_column(Integer, nullable=False)
+    person_id: Mapped[int] = mapped_column(Integer, ForeignKey('persons.id'), nullable=False)
+    balance: Mapped[float] = mapped_column(Float, nullable=False)
+    avaliable_balance: Mapped[float] = mapped_column(Float, nullable=False)
 
-    owner = relationship("Person", back_populates="account")
-    card = relationship("Card", back_populates="owner")
-
-    
+    owner: Mapped["Person"] = relationship("Person", back_populates="account") # type: ignore
+    card: Mapped["Card"] = relationship("Card", back_populates="owner") # type: ignore
