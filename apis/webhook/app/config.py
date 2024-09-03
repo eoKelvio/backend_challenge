@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings
 from fastapi import FastAPI
-import uvicorn
 
 app = FastAPI()
 

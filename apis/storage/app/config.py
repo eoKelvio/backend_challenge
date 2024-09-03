@@ -13,6 +13,3 @@ settings = Settings()
 DATABASE_URL = settings.database_url
 
 app = FastAPI()
-
-# if __name__ == "__config__":
-#     uvicorn.run("config:app", host="0.0.0.0", port=9999, reload=True)
