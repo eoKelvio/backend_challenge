@@ -1,4 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from shared import RabbitMQ
 
+app = FastAPI()
+rabbitmq = RabbitMQ()

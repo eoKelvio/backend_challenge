@@ -1,4 +1,4 @@
-from webhook.app.src.routes import webhook
+from webhook.app.src import route
 from webhook.app.config import app
 
-app.include_router(webhook.router)
+app.include_router(route.router)

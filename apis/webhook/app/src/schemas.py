@@ -16,6 +16,7 @@ class PersonBody(BaseModel):
     salary: float
     cpf: str
 
+
 class AccountBody(BaseModel):
     id: int
     status_id: int

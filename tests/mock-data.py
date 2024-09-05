@@ -3,7 +3,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 
-from webhook.app.src.schemas import AccountBody, CardBody, PersonBody
+from apis.webhook.app.src.schemas import PersonBody, AccountBody, CardBody
 
 person_data = PersonBody(
     id=2,
@@ -34,9 +34,6 @@ card_data = CardBody(
     expiration_date="09/29"
 )
 
-# Serializar para JSON
-
-
 # Carregar a chave pública
 def load_public_key(public_key_path):
     with open(public_key_path, "rb") as key_file:
@@ -58,7 +55,7 @@ def encrypt_body(body, public_key_path):
 
 test_json = person_data.model_dump_json()
 
-encrypted_body = encrypt_body(test_json, "./public_key.pem")
+encrypted_body = encrypt_body(test_json, "../secrets/public_key.pem")
 encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
 print(encrypted_body_base64)
 
