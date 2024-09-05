@@ -5,7 +5,7 @@ from config import RABBITMQ_URL
 
 class RabbitMQ:
     def __init__(self):
-        for _ in range(5):  # Tenta 5 vezes
+        for _ in range(5):
             try:
                 self.connection = pika.BlockingConnection(pika.URLParameters(RABBITMQ_URL))
                 self.channel = self.connection.channel()
