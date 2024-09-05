@@ -1,7 +1,6 @@
 import enum
 from sqlalchemy import Integer, Float, ForeignKey, Enum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from storage.app.src.database import mapper_registry
 
 class StatusEnum(enum.Enum):
     PENDENT = 0
@@ -9,7 +8,6 @@ class StatusEnum(enum.Enum):
     SUSPENDED = 2
     CLOSED = 3
 
-@mapper_registry.mapped
 class Account:
     __tablename__ = "accounts"
 

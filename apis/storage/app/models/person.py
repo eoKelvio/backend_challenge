@@ -1,8 +1,6 @@
 from sqlalchemy import Integer, String, Date, Float
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from storage.app.src.database import mapper_registry
 
-@mapper_registry.mapped
 class Person:
     __tablename__ = "persons"
 

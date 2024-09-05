@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi.encoders import jsonable_encoder
 from webhook.app.src.utils import decrypt_body
-from config import PRIVATE_KEY_PATH
+from webhook.app.config import PRIVATE_KEY_PATH
 from webhook.app.src.schemas import RequestSchema, PersonBody, AccountBody, CardBody
 from shared import RabbitMQ
 

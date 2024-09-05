@@ -11,7 +11,6 @@ COPY apis/ .
 
 COPY .env .env
 
-
 EXPOSE 9999
 
 COPY start.sh /start.sh
