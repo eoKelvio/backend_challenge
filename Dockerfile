@@ -10,6 +10,7 @@ COPY apis/ .
 # COPY apis/streaming/ ./streaming/
 
 COPY .env .env
+COPY schema.sql .
 
 EXPOSE 9999
 

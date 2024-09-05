@@ -1,22 +1,15 @@
-import enum
-from sqlalchemy import Integer, Float, ForeignKey, Enum
+from sqlalchemy import Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-
-class StatusEnum(enum.Enum):
-    PENDENT = 0
-    ACTIVE = 1
-    SUSPENDED = 2
-    CLOSED = 3
 
 class Account:
     __tablename__ = "accounts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    status_id: Mapped[StatusEnum] = mapped_column(Enum(StatusEnum), nullable=False, default=StatusEnum.PENDENT)
-    due_day: Mapped[int] = mapped_column(Integer, nullable=False)
+    status_id: Mapped[int]
+    due_day: Mapped[int]
     person_id: Mapped[int] = mapped_column(Integer, ForeignKey('persons.id'), nullable=False)
-    balance: Mapped[float] = mapped_column(Float, nullable=False)
-    avaliable_balance: Mapped[float] = mapped_column(Float, nullable=False)
+    balance: Mapped[float]
+    avaliable_balance: Mapped[float]
 
     owner: Mapped["Person"] = relationship("Person", back_populates="account") # type: ignore
     card: Mapped["Card"] = relationship("Card", back_populates="owner") # type: ignore
