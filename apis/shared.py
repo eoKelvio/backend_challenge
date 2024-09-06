@@ -2,6 +2,7 @@ import time
 import pika
 import json
 from config import RABBITMQ_URL
+from fastapi.logger import logger
 
 class RabbitMQ:
     def __init__(self):
@@ -9,13 +10,13 @@ class RabbitMQ:
             try:
                 self.connection = pika.BlockingConnection(pika.URLParameters(RABBITMQ_URL))
                 self.channel = self.connection.channel()
-                print("Conexão efetuada com sucesso!")
+                logger.info("Connection made successfully!")
                 break
             except pika.exceptions.AMQPConnectionError:
-                print("Tentativa de conexão falhou. Tentando novamente em 5 segundos...")
+                logger.info("Connection attempt failed. Trying again in 5 seconds...")
                 time.sleep(5)
         else:
-            raise Exception("Não foi possível conectar ao RabbitMQ após várias tentativas.")
+            raise Exception("Unable to connect to RabbitMQ after several attempts.")
 
         self.declare_exchange('events')
         self.declare_queue('person_queue')
@@ -43,7 +44,7 @@ class RabbitMQ:
     def setup_consuming(self, queues_callbacks):
         for queue, callback in queues_callbacks.items():
             self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
-            print(f"Consumindo mensagens da fila: {queue}")
+            logger.info(f"Consumindo mensagens da fila: {queue}")
 
     def close_connection(self):
         self.connection.close()

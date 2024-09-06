@@ -1,4 +1,5 @@
 import json
+from fastapi.logger import logger
 from sqlalchemy.orm import Session
 from shared import RabbitMQ
 from storage.app.src.database import get_db, save_to_db
@@ -9,36 +10,36 @@ from storage.app.models.card import Card
 def person_message(ch, method, properties, body):
     session = next(get_db())  
     message = json.loads(body)
-    print(f"Mensagem de pessoa recebida: {message}")
+    logger.info(f"Received person message")
     
     try:
         save_to_db(session, Person, message)
     except Exception as e:
-        print(f"Erro ao salvar dados da pessoa: {e}")
+        logger.error(f"Error when saving person data: {e}")
     finally:
         session.close()
 
 def account_message(ch, method, properties, body):
     session = next(get_db())
     message = json.loads(body)
-    print(f"Mensagem de conta recebida: {message}")
+    print(f"Received account message")
     
     try:
         save_to_db(session, Account, message)
     except Exception as e:
-        print(f"Erro ao salvar dados da conta: {e}")
+        logger.error(f"Error when saving person data: {e}")
     finally:
         session.close()
 
 def card_message(ch, method, properties, body):
     session = next(get_db())
     message = json.loads(body)
-    print(f"Mensagem de cartão recebida: {message}")
+    print(f"Received card message")
     
     try:
         save_to_db(session, Card, message)
     except Exception as e:
-        print(f"Erro ao salvar dados do cartão: {e}")
+        logger.error(f"Error when saving person data: {e}")
     finally:
         session.close()
 
