@@ -7,10 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONPATH=/api/webhook/app:/api/storage/app
 
 COPY apis/ .
-# COPY apis/streaming/ ./streaming/
-
 COPY .env .env
-COPY schema.sql .
 
 EXPOSE 9999
 

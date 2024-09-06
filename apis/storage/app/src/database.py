@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, registry
 from storage.app.config import DATABASE_URL
+from sqlalchemy.ext.declarative import declarative_base
 
+Base = declarative_base()
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 mapper_registry = registry()
@@ -23,9 +25,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-def create_tables():
-    from storage.app.models.account import Account
-    from storage.app.models.card import Card
-    from storage.app.models.person import Person
-    mapper_registry.metadata.create_all(bind=engine)

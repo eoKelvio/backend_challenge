@@ -40,9 +40,10 @@ class RabbitMQ:
             properties=pika.BasicProperties(delivery_mode=2)
         )
 
-    def consume_messages(self, queue, callback):
-        self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
-        self.channel.start_consuming()
+    def setup_consuming(self, queues_callbacks):
+        for queue, callback in queues_callbacks.items():
+            self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
+            print(f"Consumindo mensagens da fila: {queue}")
 
     def close_connection(self):
         self.connection.close()

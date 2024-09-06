@@ -1,24 +1,55 @@
 import json
-from storage.app.src.route import person_save, account_save, card_save
+from sqlalchemy.orm import Session
+from shared import RabbitMQ
+from storage.app.src.database import get_db, save_to_db
+from storage.app.models.person import Person
+from storage.app.models.account import Account
+from storage.app.models.card import Card
 
-def process_message(ch, method, properties, body):
+def person_message(ch, method, properties, body):
+    session = next(get_db())  
+    message = json.loads(body)
+    print(f"Mensagem de pessoa recebida: {message}")
+    
     try:
-        message = json.loads(body)
-        event = method.routing_key.split('.')[1]
-
-        if event == "person":
-            response = person_save(message)
-        elif event == "account":
-            response = account_save(message)
-        elif event == "card":
-            response = card_save(message)
-        else:
-            raise ValueError(f"Unknown event type: {event}")
-
-        if response.status_code != 200:
-            raise Exception(f"Failed to save data: {response.text}")
-
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+        save_to_db(session, Person, message)
     except Exception as e:
-        print(f"Failed to process message: {e}")
+        print(f"Erro ao salvar dados da pessoa: {e}")
+    finally:
+        session.close()
 
+def account_message(ch, method, properties, body):
+    session = next(get_db())
+    message = json.loads(body)
+    print(f"Mensagem de conta recebida: {message}")
+    
+    try:
+        save_to_db(session, Account, message)
+    except Exception as e:
+        print(f"Erro ao salvar dados da conta: {e}")
+    finally:
+        session.close()
+
+def card_message(ch, method, properties, body):
+    session = next(get_db())
+    message = json.loads(body)
+    print(f"Mensagem de cartão recebida: {message}")
+    
+    try:
+        save_to_db(session, Card, message)
+    except Exception as e:
+        print(f"Erro ao salvar dados do cartão: {e}")
+    finally:
+        session.close()
+
+def start_consuming():
+    rabbitmq = RabbitMQ()
+
+    queues_callbacks = {
+        'account_queue': account_message,
+        'person_queue': person_message,
+        'card_queue': card_message
+    }
+
+    rabbitmq.setup_consuming(queues_callbacks)
+    rabbitmq.channel.start_consuming()
