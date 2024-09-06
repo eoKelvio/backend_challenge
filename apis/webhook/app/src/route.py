@@ -32,7 +32,7 @@ def decrypt(request):
     return jsonable_encoder(body)
 
 @router.post('/person')
-async def person_response(request: RequestSchema):
+def person_response(request: RequestSchema):
     try:
         time_zone = pytz.timezone('America/Sao_Paulo')
         time = datetime.now(time_zone)
@@ -48,7 +48,7 @@ async def person_response(request: RequestSchema):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post('/account')
-async def account_response(request: RequestSchema):
+def account_response(request: RequestSchema):
     try:
         time_zone = pytz.timezone('America/Sao_Paulo')
         time = datetime.now(time_zone)
@@ -64,7 +64,7 @@ async def account_response(request: RequestSchema):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post('/card')
-async def card_response(request: RequestSchema):
+def card_response(request: RequestSchema):
     try:
         time_zone = pytz.timezone('America/Sao_Paulo')
         time = datetime.now(time_zone)
