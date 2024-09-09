@@ -4,9 +4,9 @@ import pytz
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi.encoders import jsonable_encoder
-from webhook.app.src.utils import decrypt_body
-from webhook.app.config import PRIVATE_KEY_PATH
-from webhook.app.src.schemas import RequestSchema, PersonBody, AccountBody, CardBody
+from src.utils import decrypt_body
+from config import PRIVATE_KEY_PATH
+from src.schemas import RequestSchema, PersonBody, AccountBody, CardBody
 from shared import RabbitMQ
 
 rabbitmq = RabbitMQ()
@@ -34,15 +34,10 @@ def decrypt(request):
 @router.post('/person')
 def person_response(request: RequestSchema):
     try:
-        time_zone = pytz.timezone('America/Sao_Paulo')
-        time = datetime.now(time_zone)
         body = decrypt(request)
-        event = request.event
         rabbitmq.publish_message('events', 'person', body)
         return {
-            "time": time,
-            "body": body,
-            "event": event
+            "message":"Mensagem enviada com sucesso!"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -50,15 +45,10 @@ def person_response(request: RequestSchema):
 @router.post('/account')
 def account_response(request: RequestSchema):
     try:
-        time_zone = pytz.timezone('America/Sao_Paulo')
-        time = datetime.now(time_zone)
         body = decrypt(request)
-        event = request.event
         rabbitmq.publish_message('events', 'account', body)
         return {
-            "time": time,
-            "body": body,
-            "event": event
+            "message":"Mensagem enviada com sucesso!"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -66,15 +56,10 @@ def account_response(request: RequestSchema):
 @router.post('/card')
 def card_response(request: RequestSchema):
     try:
-        time_zone = pytz.timezone('America/Sao_Paulo')
-        time = datetime.now(time_zone)
         body = decrypt(request)
-        event = request.event
         rabbitmq.publish_message('events', 'card', body)
         return {
-            "time": time,
-            "body": body,
-            "event": event
+            "message":"Mensagem enviada com sucesso!"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

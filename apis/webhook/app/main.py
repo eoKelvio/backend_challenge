@@ -1,5 +1,5 @@
-from webhook.app.src import route
-from webhook.app.config import app
+from src import route
+from config import app
 
 @app.get("/")
 def root():

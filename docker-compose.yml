@@ -4,9 +4,9 @@ services:
   postgres: 
     image: postgres:16-alpine3.20
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 244466666
-      POSTGRES_DB: dbc
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - 5432:5432
     volumes:
@@ -24,21 +24,28 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - ./secrets/private_key.pem:/api/secrets/private_key.pem:ro
+      - ./apis/webhook:/api
+      - ${PRIVATE_KEY_PATH}:/secrets/private_key.pem:ro
     environment:
-      PRIVATE_KEY_PATH: ./secrets/private_key.pem   
+      PRIVATE_KEY_PATH: ${PRIVATE_KEY_PATH}
+      PYTHONPATH: /api/app 
+    command: ["fastapi", "run", "api/app/main.py", "--port", "9999"]
 
   storage:
     build: .
     environment:
-      DATABASE_URL: postgresql://postgres:244466666@postgres:5432/dbc 
+      DATABASE_URL: ${DATABASE_URL}
+      PYTHONPATH: /api/app
     ports:
       - '9998:9998'
+    volumes:
+      - ./apis/storage:/api
     networks:
       - senai
     depends_on:
       - postgres
       - rabbitmq
+    command: ["fastapi", "run", "api/app/main.py", "--port", "9998"]
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -46,8 +53,8 @@ services:
       - '5672:5672'
       - '15672:15672'
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     networks:
       - senai
 
