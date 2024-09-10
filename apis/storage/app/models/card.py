@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from storage.app.src.database import Base
+from src.database import Base
 
 class Card(Base):
     __tablename__ = "cards"

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from storage.app.src import route
-from storage.app.src.utils import start_consuming
+from src import route
+from src.utils import start_consuming
 import threading
 
 def lifespan(app: FastAPI):

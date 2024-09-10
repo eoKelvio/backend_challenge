@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from storage.app.src.database import Base
+from src.database import Base
 
 class Account(Base):
     __tablename__ = "accounts"

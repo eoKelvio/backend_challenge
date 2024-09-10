@@ -2,10 +2,10 @@ import json
 from fastapi.logger import logger
 from sqlalchemy.orm import Session
 from shared import RabbitMQ
-from storage.app.src.database import get_db, save_to_db
-from storage.app.models.person import Person
-from storage.app.models.account import Account
-from storage.app.models.card import Card
+from src.database import get_db, save_to_db
+from models.person import Person
+from models.account import Account
+from models.card import Card
 
 def person_message(ch, method, properties, body):
     session = next(get_db())  
