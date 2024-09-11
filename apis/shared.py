@@ -22,10 +22,16 @@ class RabbitMQ:
         self.declare_queue('person_queue')
         self.declare_queue('account_queue')
         self.declare_queue('card_queue')
+        self.declare_queue('person_confirmation_queue')
+        self.declare_queue('account_confirmation_queue')
+        self.declare_queue('card_confirmation_queue')
 
         self.channel.queue_bind(exchange='events', queue='person_queue', routing_key='person')
         self.channel.queue_bind(exchange='events', queue='account_queue', routing_key='account')
         self.channel.queue_bind(exchange='events', queue='card_queue', routing_key='card')
+        self.channel.queue_bind(exchange='events', queue='person_confirmation_queue', routing_key='person_confirmation')
+        self.channel.queue_bind(exchange='events', queue='account_confirmation_queue', routing_key='account_confirmation')
+        self.channel.queue_bind(exchange='events', queue='card_confirmation_queue', routing_key='card_confirmation')
 
     def declare_queue(self, queue_name):
         self.channel.queue_declare(queue=queue_name, durable=True)
@@ -43,8 +49,15 @@ class RabbitMQ:
 
     def setup_consuming(self, queues_callbacks):
         for queue, callback in queues_callbacks.items():
-            self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
+            self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=False)  
             logger.info(f"Consumindo mensagens da fila: {queue}")
 
     def close_connection(self):
         self.connection.close()
+
+    def send_confirmation(self, routing_key, message):
+        try:
+            self.publish_message(exchange='events', routing_key=routing_key, message=message)
+            self.close_connection()
+        except Exception as e:
+            print(f"Failed to send confirmation message: {e}")
