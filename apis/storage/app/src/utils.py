@@ -1,16 +1,17 @@
 import json
+
 from fastapi.logger import logger
-from sqlalchemy.orm import Session
-from shared import RabbitMQ
-from src.database import get_db, save_to_db
-from models.person import Person
 from models.account import Account
 from models.card import Card
+from models.person import Person
+from shared import RabbitMQ
+from src.database import get_db, save_to_db
+
 
 def person_message(ch, method, properties, body):
-    session = next(get_db())  
+    session = next(get_db())
     message = json.loads(body)
-    logger.info(f"Received person message")
+    logger.info("Received person message")
     try:
         save_to_db(session, Person, message)
 
@@ -23,10 +24,11 @@ def person_message(ch, method, properties, body):
     finally:
         session.close()
 
+
 def account_message(ch, method, properties, body):
     session = next(get_db())
     message = json.loads(body)
-    logger.info(f"Received account message")
+    logger.info("Received account message")
     try:
         save_to_db(session, Account, message)
 
@@ -39,10 +41,11 @@ def account_message(ch, method, properties, body):
     finally:
         session.close()
 
+
 def card_message(ch, method, properties, body):
     session = next(get_db())
     message = json.loads(body)
-    logger.info(f"Received card message")
+    logger.info("Received card message")
     try:
         save_to_db(session, Card, message)
 
@@ -54,6 +57,7 @@ def card_message(ch, method, properties, body):
         logger.error(f"Error when saving person data: {e}")
     finally:
         session.close()
+
 
 def start_consuming():
     rabbitmq = RabbitMQ()

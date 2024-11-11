@@ -1,12 +1,13 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session, registry
 from config import DATABASE_URL
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, registry, sessionmaker
 
 Base = declarative_base()
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 mapper_registry = registry()
+
 
 def save_to_db(db: Session, model, data):
     try:
@@ -18,6 +19,7 @@ def save_to_db(db: Session, model, data):
     except Exception as e:
         db.rollback()
         raise Exception(f"Error saving to database: {str(e)}")
+
 
 def get_db():
     db = SessionLocal()

@@ -1,10 +1,13 @@
-from pydantic import BaseModel
 from datetime import date, datetime
+
+from pydantic import BaseModel
+
 
 class RequestSchema(BaseModel):
     time: datetime
     body: str
     event: str
+
 
 class PersonBody(BaseModel):
     id: int
@@ -24,6 +27,7 @@ class AccountBody(BaseModel):
     person_id: int
     balance: float
     avaliable_balance: float
+
 
 class CardBody(BaseModel):
     id: int

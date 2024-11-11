@@ -1,8 +1,10 @@
-import time
-import pika
 import json
+import time
+
+import pika
 from config import RABBITMQ_URL
 from fastapi.logger import logger
+
 
 class RabbitMQ:
     def __init__(self):
@@ -38,7 +40,7 @@ class RabbitMQ:
 
     def declare_exchange(self, exchange_name):
         self.channel.exchange_declare(exchange=exchange_name, exchange_type='topic', durable=True)
-        
+
     def publish_message(self, exchange, routing_key, message):
         self.channel.basic_publish(
             exchange=exchange,
@@ -49,7 +51,7 @@ class RabbitMQ:
 
     def setup_consuming(self, queues_callbacks):
         for queue, callback in queues_callbacks.items():
-            self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=False)  
+            self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=False)
             logger.info(f"Consumindo mensagens da fila: {queue}")
 
     def close_connection(self):

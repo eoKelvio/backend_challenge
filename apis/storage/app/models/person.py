@@ -1,6 +1,7 @@
-from sqlalchemy import Integer, String, Date, Float
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy import Date, Float, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
+
 
 class Person(Base):
     __tablename__ = "persons"
@@ -14,4 +15,4 @@ class Person(Base):
     salary: Mapped[float] = mapped_column(Float)
     cpf: Mapped[str] = mapped_column(String)
 
-    account: Mapped["Account"] = relationship("Account", back_populates="owner") # type: ignore
+    account: Mapped["Account"] = relationship("Account", back_populates="owner")  # type: ignore

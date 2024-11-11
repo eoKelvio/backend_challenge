@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     rabbitmq_url: str
     database_url: str
@@ -8,6 +9,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         extra = "ignore"
+
 
 settings = Settings()
 app = FastAPI()

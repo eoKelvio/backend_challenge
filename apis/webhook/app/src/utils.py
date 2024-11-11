@@ -1,7 +1,7 @@
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import UnsupportedAlgorithm
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+
 
 def load_private_key(private_key_path, password=None):
     with open(private_key_path, "rb") as key_file:
@@ -19,8 +19,9 @@ def load_private_key(private_key_path, password=None):
             raise ValueError("Incorrect password or the key is not encrypted.")
         except UnsupportedAlgorithm as e:
             raise ValueError(f"Unsupported key encryption algorithm: {e}")
-    
+
     return private_key
+
 
 def decrypt_body(encrypted_body, private_key_path, password=None):
     private_key = load_private_key(private_key_path, password=password)

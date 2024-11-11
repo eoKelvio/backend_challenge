@@ -1,6 +1,7 @@
-from sqlalchemy import Integer, Float, ForeignKey
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy import Float, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
+
 
 class Account(Base):
     __tablename__ = "accounts"
@@ -12,5 +13,5 @@ class Account(Base):
     balance: Mapped[float] = mapped_column(Float, nullable=False)
     avaliable_balance: Mapped[float] = mapped_column(Float, nullable=False)
 
-    owner: Mapped["Person"] = relationship("Person", back_populates="account") # type: ignore
-    card: Mapped["Card"] = relationship("Card", back_populates="owner") # type: ignore
+    owner: Mapped["Person"] = relationship("Person", back_populates="account")  # type: ignore
+    card: Mapped["Card"] = relationship("Card", back_populates="owner")  # type: ignore

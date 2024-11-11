@@ -1,10 +1,11 @@
 import base64
 import os
-from cryptography.hazmat.primitives import serialization
+
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
 from faker import Faker
-from webhook.app.src.schemas import PersonBody, AccountBody, CardBody
+from webhook.app.src.schemas import AccountBody, CardBody, PersonBody
+
 
 class IDGenerator:
     def __init__(self, start=1):
@@ -15,6 +16,7 @@ class IDGenerator:
         self.current_id += 1
         return next_id
 
+
 fake = Faker('pt_BR')
 person_id = IDGenerator(start=1)
 account_id = IDGenerator(start=1)
@@ -24,7 +26,7 @@ balance = round(fake.random.uniform(1000, 30000), 2)
 avaliable_balance = round(fake.random.uniform(0, balance), 2)
 
 person_data = PersonBody(
-    id=person_id.get_next_id(),  
+    id=person_id.get_next_id(),
     name=fake.name(),
     email=fake.email(),
     gender=fake.random_element(elements=('M', 'F')),
@@ -52,6 +54,7 @@ card_data = CardBody(
     expiration_date=fake.credit_card_expire()
 )
 
+
 def load_public_key(public_key_path):
     """
     Carrega a chave pública de um caminho fornecido, verificando se o arquivo existe.
@@ -63,13 +66,15 @@ def load_public_key(public_key_path):
     else:
         raise FileNotFoundError(f"O arquivo de chave pública não foi encontrado em: {public_key_path}")
 
+
 def split_data(data, chunk_size):
     return [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
+
 
 def encrypt_body(body, public_key_path, chunk_size=190):
     public_key = load_public_key(public_key_path)
     chunks = split_data(body.encode('utf-8'), chunk_size)
-    
+
     encrypted_chunks = []
     for chunk in chunks:
         encrypted_chunk = public_key.encrypt(
@@ -81,20 +86,22 @@ def encrypt_body(body, public_key_path, chunk_size=190):
             )
         )
         encrypted_chunks.append(encrypted_chunk)
-    
+
     encrypted_body = b''.join(encrypted_chunks)
     return encrypted_body
+
 
 person = person_data.model_dump_json()
 account = account_data.model_dump_json()
 card = card_data.model_dump_json()
 
+
 def encrypt(json, json_name):
     public_key_path = os.path.join(os.path.dirname(__file__), "../secrets/public_key.pem")
-    
+
     encrypted_body = encrypt_body(json, public_key_path)
     encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
-    
+
     print(f"Body de {json_name}:\n")
     print(encrypted_body_base64, end="\n\n")
 
