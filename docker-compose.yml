@@ -12,17 +12,18 @@ services:
       - ./schemas.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - senai
-
+  
   mongodb:
     image: mongo
     ports:
       - '27017:27017'
     volumes:
-      - ./mongo_data:/data/db
+      - mongo_data:/data/db
     networks:
       - senai
     environment:
       MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
+
 
   webhook:
     build: .
@@ -38,7 +39,7 @@ services:
     environment:
       PRIVATE_KEY_PATH: ${PRIVATE_KEY_PATH}
       PYTHONPATH: /api/app 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9999"]
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
 
   storage:
     build: .
@@ -54,7 +55,8 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9998"]
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
+
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -73,3 +75,4 @@ networks:
 
 volumes:
   postgres_data:
+  mongo_data:
