@@ -79,11 +79,18 @@ def encrypt_body(body, public_key_path, chunk_size=190):
     encrypted_body = b''.join(encrypted_chunks)
     return encrypted_body
 
-person_json = person_data.model_dump_json()
-account_json = account_data.model_dump_json()
-card_json = card_data.model_dump_json()
+person= person_data.model_dump_json()
+account = account_data.model_dump_json()
+card = card_data.model_dump_json()
 
 
-encrypted_body = encrypt_body(person_json, "../secrets/public_key.pem")
-encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
-print(encrypted_body_base64)
+def encrypt(json, json_name):
+    encrypted_body = encrypt_body(json, "../secrets/public_key.pem")
+    encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
+    print(f"Body de {json_name}:\n")
+    print(encrypted_body_base64, end="\n\n")
+
+# Chamadas com o nome das variáveis como strings
+encrypt(person, "person")
+encrypt(account, "account")
+encrypt(card, "card")
