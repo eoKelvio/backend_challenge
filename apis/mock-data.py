@@ -1,11 +1,11 @@
 import base64
+import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from faker import Faker
 from webhook.app.src.schemas import PersonBody, AccountBody, CardBody
 
-# Gerador de ID crescente
 class IDGenerator:
     def __init__(self, start=1):
         self.current_id = start
@@ -53,9 +53,15 @@ card_data = CardBody(
 )
 
 def load_public_key(public_key_path):
-    with open(public_key_path, "rb") as key_file:
-        public_key = serialization.load_pem_public_key(key_file.read())
-    return public_key
+    """
+    Carrega a chave pública de um caminho fornecido, verificando se o arquivo existe.
+    """
+    if os.path.exists(public_key_path):
+        with open(public_key_path, "rb") as key_file:
+            public_key = serialization.load_pem_public_key(key_file.read())
+        return public_key
+    else:
+        raise FileNotFoundError(f"O arquivo de chave pública não foi encontrado em: {public_key_path}")
 
 def split_data(data, chunk_size):
     return [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
@@ -79,18 +85,20 @@ def encrypt_body(body, public_key_path, chunk_size=190):
     encrypted_body = b''.join(encrypted_chunks)
     return encrypted_body
 
-person= person_data.model_dump_json()
+person = person_data.model_dump_json()
 account = account_data.model_dump_json()
 card = card_data.model_dump_json()
 
-
 def encrypt(json, json_name):
-    encrypted_body = encrypt_body(json, "../secrets/public_key.pem")
+    public_key_path = os.path.join(os.path.dirname(__file__), "../secrets/public_key.pem")
+    
+    encrypted_body = encrypt_body(json, public_key_path)
     encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
+    
     print(f"Body de {json_name}:\n")
     print(encrypted_body_base64, end="\n\n")
 
-# Chamadas com o nome das variáveis como strings
+
 encrypt(person, "person")
 encrypt(account, "account")
 encrypt(card, "card")
