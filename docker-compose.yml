@@ -9,9 +9,20 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # - ./schemas.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./schemas.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - senai
+
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo_data:/data/db
+    networks:
+      - senai
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
 
   webhook:
     build: .

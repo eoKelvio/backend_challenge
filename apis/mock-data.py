@@ -82,10 +82,8 @@ def encrypt_body(body, public_key_path, chunk_size=190):
 person_json = person_data.model_dump_json()
 account_json = account_data.model_dump_json()
 card_json = card_data.model_dump_json()
-print(person_json)
-print(account_json)
-print(card_json)
 
-# encrypted_body = encrypt_body(person_json, "../secrets/public_key.pem")
-# encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
-# print(encrypted_body_base64)
+
+encrypted_body = encrypt_body(person_json, "../secrets/public_key.pem")
+encrypted_body_base64 = base64.b64encode(encrypted_body).decode('utf-8')
+print(encrypted_body_base64)
